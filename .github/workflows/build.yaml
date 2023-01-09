@@ -15,7 +15,7 @@ jobs:
           path: halo
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
+          distribution: 'temurin'
           java-version: '17'
       - run: |
           cd halo
@@ -27,7 +27,8 @@ jobs:
         with:
           node-version: '16'
       - run: npm install -g pnpm
-      - run: |
+      - name: copy resources
+        run: |
           cd console
           pnpm install
           pnpm build:packages
@@ -40,7 +41,8 @@ jobs:
         with:
           path: './halo/gradle.properties'
           properties: 'version'
-      - run: |
+      - name: build
+        run: |
           cd halo 
           ./gradlew clean build -x check -x jar
           ls -lah build/libs
@@ -49,6 +51,6 @@ jobs:
         with:
           name: ${{ steps.property.outputs.version }}
           tag_name: ${{ steps.property.outputs.version }}
-          token: ${{ secrets.token }}
-          draft: true
+          token: ${{ secrets.TOKEN }}
+          prerelease: true
           files: halo/build/libs/halo-${{ steps.property.outputs.version }}.jar
