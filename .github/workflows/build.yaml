@@ -43,10 +43,12 @@ jobs:
       - run: |
           cd halo 
           ./gradlew clean build -x check -x jar
+          ls -lah build/libs
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ steps.property.outputs.version }}
           tag_name: ${{ steps.property.outputs.version }}
+          token: ${{ secrets.token }}
           draft: true
           files: halo/build/libs/halo-${{ steps.property.outputs.version }}.jar
