@@ -1,10 +1,10 @@
 name: learn-github-actions
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   schedule:
-    - cron: '30 5,17 * * *'
+    - cron: '30 17 * * *'
 jobs:
   halo:
     runs-on: ubuntu-latest
@@ -17,8 +17,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - run: |
-          cd halo
       - uses: actions/checkout@v3
         with:
           repository: halo-dev/console
@@ -34,6 +32,7 @@ jobs:
           pnpm build:packages
           pnpm build
           mkdir ../halo/src/main/resources/console
+          ls -lah 
           cp -r dist/* ../halo/src/main/resources/console
       - name: Read value from Properties-file
         id: property
