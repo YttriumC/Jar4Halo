@@ -4,9 +4,9 @@ on:
     branches:
       - main
   schedule:
-    - cron:  '30 5,17 * * *'
+    - cron: '30 5,17 * * *'
 jobs:
-  console:
+  halo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +21,8 @@ jobs:
           cd halo
           pwd
       - run: pwd
-  halo:
+      - run: ls -alh
+  console:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,4 +33,12 @@ jobs:
         with:
           node-version: '16'
       - run: npm install -g pnpm
-      - run: ls -lah
+      - run: ls -alh
+  build:
+    needs:
+      - halo
+      - console
+    steps:
+      - run: |
+          ls -lah
+          pwd
