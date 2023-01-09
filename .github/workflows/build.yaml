@@ -19,9 +19,6 @@ jobs:
           java-version: '17'
       - run: |
           cd halo
-          pwd
-      - run: pwd
-      - run: ls -alh
       - uses: actions/checkout@v3
         with:
           repository: halo-dev/console
@@ -30,4 +27,19 @@ jobs:
         with:
           node-version: '16'
       - run: npm install -g pnpm
-      - run: ls -alh
+      - run: |
+          cd console
+          git checkout v2.1.0
+          pnpm install
+          pnpm build:packages
+          pnpm build
+          mkdir ../halo/src/main/resources/console
+          cp -r dist/* ../halo/src/main/resources/console
+      - run: |
+          cd halo 
+          ./gradlew clean build -x check -x jar
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: halo/build/libs/halo-*.jar
