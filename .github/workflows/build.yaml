@@ -1,0 +1,35 @@
+name: learn-github-actions
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron:  '30 5,17 * * *'
+jobs:
+  console:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: halo-dev/halo
+          path: halo
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+      - run: |
+          cd halo
+          pwd
+      - run: pwd
+  halo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: halo-dev/console
+          path: console
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install -g pnpm
+      - run: ls -lah
