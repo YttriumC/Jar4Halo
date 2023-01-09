@@ -34,11 +34,19 @@ jobs:
           pnpm build
           mkdir ../halo/src/main/resources/console
           cp -r dist/* ../halo/src/main/resources/console
+      - name: Read value from Properties-file
+        id: property
+        uses: christian-draeger/read-properties@1.1.0
+        with:
+          path: './halo/gradle.properties'
+          properties: 'version'
       - run: |
           cd halo 
           ./gradlew clean build -x check -x jar
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: halo/build/libs/halo-*.jar
+          name: ${{ steps.property.outputs.version }}
+          tag_name: ${{ steps.property.outputs.version }}
+          draft: true
+          files: halo/build/libs/halo-${{ steps.property.outputs.version }}.jar
