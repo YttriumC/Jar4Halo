@@ -35,6 +35,7 @@ jobs:
       - run: npm install -g pnpm
       - run: ls -alh
   build:
+    runs-on: ubuntu-latest
     needs:
       - halo
       - console
