@@ -29,7 +29,6 @@ jobs:
       - run: npm install -g pnpm
       - run: |
           cd console
-          git checkout v2.1.0
           pnpm install
           pnpm build:packages
           pnpm build
