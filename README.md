@@ -1,5 +1,5 @@
 # Jar4Halo
 Halo 博客的Java构建
 
-## version
-v2.1.0
+# 原理
+使用Github Actions 自动构建Jar包
