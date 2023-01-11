@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: Build Halo Fat Jar
 on:
 #  push:
 #    branches:
