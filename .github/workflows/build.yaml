@@ -31,7 +31,7 @@ jobs:
           pnpm install
           pnpm build:packages
           pnpm build
-          mkdir ../halo/src/main/resources/console
+          mkdir -p ../halo/src/main/resources/console
           ls -lah 
           cp -r dist/* ../halo/src/main/resources/console
       - name: Read value from Properties-file
