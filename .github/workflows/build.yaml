@@ -44,7 +44,7 @@ jobs:
         run: |
           cd halo 
           ./gradlew clean build -x check -x jar
-          ls -lah build/libs
+          ls -lah
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
