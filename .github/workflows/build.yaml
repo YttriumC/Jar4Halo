@@ -31,9 +31,9 @@ jobs:
           pnpm install
           pnpm build:packages
           pnpm build
-          mkdir -p ../halo/src/main/resources/console
-          ls -lah 
-          cp -r dist/* ../halo/src/main/resources/console
+          mkdir -p ../halo/application/src/main/resources/console
+          ls -lah ../halo/application/src/main/resources
+          cp -r dist/* ../halo/application/src/main/resources/console
       - name: Read value from Properties-file
         id: property
         uses: christian-draeger/read-properties@1.1.0
@@ -52,4 +52,4 @@ jobs:
           tag_name: ${{ steps.property.outputs.version }}
           token: ${{ secrets.TOKEN }}
           prerelease: true
-          files: halo/build/libs/halo-${{ steps.property.outputs.version }}.jar
+          files: halo/application/build/libs/halo-${{ steps.property.outputs.version }}.jar
