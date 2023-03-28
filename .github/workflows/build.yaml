@@ -52,4 +52,4 @@ jobs:
           tag_name: ${{ steps.property.outputs.version }}
           token: ${{ secrets.TOKEN }}
           prerelease: true
-          files: halo/application/build/libs/halo-${{ steps.property.outputs.version }}.jar
+          files: halo/application/build/libs/application-${{ steps.property.outputs.version }}.jar
