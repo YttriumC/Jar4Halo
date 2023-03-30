@@ -17,23 +17,19 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: actions/checkout@v3
-        with:
-          repository: halo-dev/console
-          path: console
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - run: npm install -g pnpm
       - name: copy resources
         run: |
-          cd console
+          cd halo/console
           pnpm install
           pnpm build:packages
           pnpm build
-          mkdir -p ../halo/application/src/main/resources/console
-          ls -lah ../halo/application/src/main/resources
-          cp -r dist/* ../halo/application/src/main/resources/console
+          mkdir -p ../application/src/main/resources/console
+          ls -lah ../application/src/main/resources
+          cp -r dist/* ../application/src/main/resources/console
       - name: Read value from Properties-file
         id: property
         uses: christian-draeger/read-properties@1.1.0
