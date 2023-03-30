@@ -24,7 +24,7 @@ jobs:
       - name: copy resources
         run: |
           cd halo/console
-          pnpm install
+          pnpm install --no-frozen-lockfile
           pnpm build:packages
           pnpm build
           mkdir -p ../application/src/main/resources/console
