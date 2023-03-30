@@ -29,6 +29,7 @@ jobs:
           pnpm build
           mkdir -p ../application/src/main/resources/console
           ls -lah ../application/src/main/resources
+          ls -lah 
           cp -r dist/* ../application/src/main/resources/console
       - name: Read value from Properties-file
         id: property
