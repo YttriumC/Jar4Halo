@@ -1,10 +1,10 @@
 name: Build Halo Fat Jar
 on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '30 17 * * *'
+  #push:
+   # branches:
+   #   - main
+  #schedule:
+   # - cron: '30 17 * * *'
 jobs:
   halo:
     runs-on: ubuntu-latest
