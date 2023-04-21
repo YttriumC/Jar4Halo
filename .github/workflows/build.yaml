@@ -1,10 +1,10 @@
 name: Build Halo Fat Jar
 on:
-  #push:
-   # branches:
-   #   - main
-  #schedule:
-   # - cron: '30 17 * * *'
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '30 17 * * *'
 jobs:
   halo:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
           java-version: '17'
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       - run: npm install -g pnpm
       - name: copy resources
         run: |
@@ -27,10 +27,6 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm build:packages
           pnpm build
-          mkdir -p ../application/src/main/resources/console
-          ls -lah ../application/src/main/resources
-          ls -lah 
-          cp -r dist/* ../application/src/main/resources/console
       - name: Read value from Properties-file
         id: property
         uses: christian-draeger/read-properties@1.1.0
