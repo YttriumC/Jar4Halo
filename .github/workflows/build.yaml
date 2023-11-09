@@ -12,14 +12,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: halo-dev/halo
-          path: halo
           fetch-depth: '0'
           fetch-tags: 'true'
+      - name: 'Get Previous tag'
+        id: tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          prefix: 'v'
       - name: check release
         id: check
         run: |
-          cd halo
-          set tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          set tag=${{ steps.tag.outputs.tag }}
           echo $tag
           echo "tag=$tag\n" >> $GITHUB_OUTPUT
           curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$?\n" >> $GITHUB_OUTPUT
@@ -37,7 +40,7 @@ jobs:
       - name: copy resources
         if: ${{ steps.check.outputs.check != 0 }}
         run: |
-          cd halo/console
+          cd console
           npm install -g pnpm
           pnpm install --no-frozen-lockfile
           pnpm build:packages
@@ -51,7 +54,6 @@ jobs:
       - name: build
         if: ${{ steps.check.outputs.check != 0 }}
         run: |
-          cd halo 
           ./gradlew clean build -x check
           ls -lah application/build/libs
       - name: Release
@@ -61,4 +63,4 @@ jobs:
           name: ${{ steps.property.outputs.version }}
           tag_name: ${{ steps.property.outputs.version }}
           token: ${{ secrets.TOKEN }}
-          files: halo/application/build/libs/application-${{ steps.check.outputs.tag }}.jar
+          files: application/build/libs/application-${{ steps.check.outputs.tag }}.jar
