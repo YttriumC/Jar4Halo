@@ -14,6 +14,7 @@ jobs:
           repository: halo-dev/halo
           path: halo
           fetch-depth: '0'
+          fetch-tags: 'true'
       - name: check release
         id: check
         run: |
