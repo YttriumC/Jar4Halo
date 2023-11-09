@@ -19,6 +19,10 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           prefix: 'v'
+      - uses: actions/checkout@v4
+        with:
+          repository: halo-dev/halo
+          ref: ${{ steps.tag.outputs.tag }}
       - name: check release
         id: check
         run: |
@@ -26,8 +30,7 @@ jobs:
           echo $tag
           echo "tag=$tag\n" >> $GITHUB_OUTPUT
           curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$?\n" >> $GITHUB_OUTPUT
-          echo $?
-          git checkout "$tag"
+          echo ${{ steps.check.outputs.check }}
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
