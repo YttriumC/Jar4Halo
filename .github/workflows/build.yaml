@@ -28,9 +28,9 @@ jobs:
         run: |
           set tag=${{ steps.tag.outputs.tag }}
           echo $tag
-          echo "tag=$tag\n" >> $GITHUB_OUTPUT
-          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$?\n" >> $GITHUB_OUTPUT
-      - run: echo ${{ steps.check.outputs.check }}
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$" >> $GITHUB_OUTPUT
+      - run: echo ${{ steps.check.outputs.check }}_${{ steps.tag.outputs.tag }}
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
@@ -63,7 +63,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: ${{ steps.check.outputs.check != 0 }}
         with:
-          name: ${{ steps.check.outputs.tag }}
-          tag_name: ${{ steps.check.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
+          tag_name: ${{ steps.tag.outputs.tag }}
           token: ${{ secrets.TOKEN }}
-          files: application/build/libs/application-${{ steps.check.outputs.tag }}.jar
+          files: application/build/libs/application-${{ steps.tag.outputs.tag }}.jar
