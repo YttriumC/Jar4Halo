@@ -18,8 +18,10 @@ jobs:
         run: |
           cd halo
           set tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo $tag
           echo "tag=$tag\n" >> $GITHUB_OUTPUT
-          echo $(curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$()\n" >> $GITHUB_OUTPUT)
+          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$?\n" >> $GITHUB_OUTPUT
+          echo $?
           git checkout "$tag"
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
