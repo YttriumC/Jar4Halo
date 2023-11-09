@@ -30,7 +30,7 @@ jobs:
           echo $tag
           echo "tag=$tag\n" >> $GITHUB_OUTPUT
           curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag" || echo "check=$?\n" >> $GITHUB_OUTPUT
-          echo ${{ steps.check.outputs.check }}
+      - run: echo ${{ steps.check.outputs.check }}
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
@@ -63,7 +63,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: ${{ steps.check.outputs.check != 0 }}
         with:
-          name: ${{ steps.property.outputs.version }}
-          tag_name: ${{ steps.property.outputs.version }}
+          name: ${{ steps.check.outputs.tag }}
+          tag_name: ${{ steps.check.outputs.tag }}
           token: ${{ secrets.TOKEN }}
           files: application/build/libs/application-${{ steps.check.outputs.tag }}.jar
