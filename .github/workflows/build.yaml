@@ -13,36 +13,49 @@ jobs:
         with:
           repository: halo-dev/halo
           path: halo
+      - name: check release
+        id: check
+        run: |
+          cd halo
+          set tag=`git describe --abbrev=0 --tags`
+          echo "tag=$tag\n" >> ../$GITHUB_OUTPUT
+          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/$tag"
+          echo "check=$?\n" >> ../$GITHUB_OUTPUT
+          git checkout "$tag"
       - uses: actions/setup-java@v3
+        if: ${{ steps.check.outputs.check != 0 }}
         with:
           distribution: 'temurin'
           java-version: '17'
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: npm install -g pnpm
+        if: ${{ steps.check.outputs.check != 0 }}
       - name: copy resources
+        if: ${{ steps.check.outputs.check != 0 }}
         run: |
           cd halo/console
+          npm install -g pnpm
           pnpm install --no-frozen-lockfile
           pnpm build:packages
           pnpm build
-      - name: Read value from Properties-file
-        id: property
-        uses: christian-draeger/read-properties@1.1.0
-        with:
-          path: './halo/gradle.properties'
-          properties: 'version'
+      # - name: Read value from Properties-file
+      #   id: property
+      #   uses: christian-draeger/read-properties@1.1.0
+      #   with:
+      #     path: './halo/gradle.properties'
+      #     properties: 'version'
       - name: build
+        if: ${{ steps.check.outputs.check != 0 }}
         run: |
           cd halo 
           ./gradlew clean build -x check
           ls -lah application/build/libs
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: ${{ steps.check.outputs.check != 0 }}
         with:
           name: ${{ steps.property.outputs.version }}
           tag_name: ${{ steps.property.outputs.version }}
           token: ${{ secrets.TOKEN }}
-          prerelease: true
-          files: halo/application/build/libs/application-${{ steps.property.outputs.version }}.jar
+          files: halo/application/build/libs/application-${{ steps.check.outputs.tag }}.jar
