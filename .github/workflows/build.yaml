@@ -24,13 +24,14 @@ jobs:
         run: |
           set tag=${{ steps.tag.outputs.tag }}
           echo $tag
-          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "tag=${{ steps.tag.outputs.tag }}" >> $GITHUB_OUTPUT
           curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/${{ steps.tag.outputs.tag }}" > /dev/null || echo "check=$?" >> $GITHUB_OUTPUT
       - run: |
           echo ${{ steps.check.outputs.check }}
           echo ${{ steps.tag.outputs.tag }}
           echo ${{ steps.check.outputs.tag }}
       - uses: actions/checkout@v4
+        if: ${{ steps.check.outputs.check != 0 }}
         with:
           repository: halo-dev/halo
           ref: ${{ steps.tag.outputs.tag }}
