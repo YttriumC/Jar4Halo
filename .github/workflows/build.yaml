@@ -25,7 +25,7 @@ jobs:
           set tag=${{ steps.tag.outputs.tag }}
           echo $tag
           echo "tag=$tag" >> $GITHUB_OUTPUT
-          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/${{ steps.tag.outputs.tag }}" || echo "check=$?" >> $GITHUB_OUTPUT
+          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/${{ steps.tag.outputs.tag }}" > /dev/null || echo "check=$?" >> $GITHUB_OUTPUT
       - run: |
           echo ${{ steps.check.outputs.check }}
           echo ${{ steps.tag.outputs.tag }}
