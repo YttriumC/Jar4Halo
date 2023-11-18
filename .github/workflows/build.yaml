@@ -39,6 +39,7 @@ jobs:
           repository: halo-dev/halo
           ref: ${{ steps.tag.outputs.tag }}
       - name: set version
+        if: ${{ steps.check.outputs.check != 0 }}
         run: |
           echo "version=${{ steps.tag.outputs.tag }}" > gradle.properties
       - uses: actions/setup-java@v3
