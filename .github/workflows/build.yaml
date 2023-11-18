@@ -25,7 +25,12 @@ jobs:
           set tag=${{ steps.tag.outputs.tag }}
           echo $tag
           echo "tag=${{ steps.tag.outputs.tag }}" >> $GITHUB_OUTPUT
-          curl -f "https://github.com/Lu7fer/Jar4Halo/releases/tag/${{ steps.tag.outputs.tag }}" > /dev/null || echo "check=$?" >> $GITHUB_OUTPUT
+          RELEASES=$(curl -s "https://api.github.com/repos/Lu7fer/Jar4Halo/releases/tags/${{ steps.tag.outputs.tag }}")
+          if echo "$RELEASES" | jq '.assets[].name' | grep -q "$TAG_NAME"; then
+            echo "check=0" >> $GITHUB_OUTPUT
+          else
+            echo "check=1" >> $GITHUB_OUTPUT
+          fi
       - run: |
           echo ${{ steps.check.outputs.check }}
           echo ${{ steps.tag.outputs.tag }}
