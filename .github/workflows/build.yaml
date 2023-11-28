@@ -39,9 +39,11 @@ jobs:
           repository: halo-dev/halo
           ref: ${{ steps.tag.outputs.tag }}
       - name: set version
+        id: ver
         if: ${{ steps.check.outputs.check != 0 }}
         run: |
-          echo "version=${{ steps.tag.outputs.tag }}" > gradle.properties
+          echo "version=${{ steps.tag.outputs.tag }}" | sed 's/v=/=/' > gradle.properties
+          cat gradle.properties >> $GITHUB_OUTPUT
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
@@ -77,4 +79,4 @@ jobs:
           name: ${{ steps.tag.outputs.tag }}
           tag_name: ${{ steps.tag.outputs.tag }}
           token: ${{ secrets.TOKEN }}
-          files: application/build/libs/application-${{ steps.tag.outputs.tag }}.jar
+          files: application/build/libs/application-${{ steps.ver.outputs.version }}.jar
