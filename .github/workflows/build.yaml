@@ -42,8 +42,9 @@ jobs:
         id: ver
         if: ${{ steps.check.outputs.check != 0 }}
         run: |
-          echo "version=${{ steps.tag.outputs.tag }}" | sed 's/v=/=/' > gradle.properties
+          echo "version=${{ steps.tag.outputs.tag }}" | sed 's/=v/=/' > gradle.properties
           cat gradle.properties >> $GITHUB_OUTPUT
+          cat gradle.properties
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
