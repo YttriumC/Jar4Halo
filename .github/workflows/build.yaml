@@ -22,9 +22,10 @@ jobs:
       - name: check release
         id: check
         run: |
-          echo=${{ steps.tag.outputs.tag }}
+          echo ${{ steps.tag.outputs.tag }}
+          VAR=$(echo "${{ steps.tag.outputs.tag }}" | sed 's/=v/=/')
           RELEASES=$(curl -s "https://api.github.com/repos/Lu7fer/Jar4Halo/releases/tags/${{ steps.tag.outputs.tag }}")
-          if echo "$RELEASES" | jq '.assets[].name' | grep -q "${{ steps.tag.outputs.tag }}"; then
+          if echo "$RELEASES" | jq '.assets[].name' | grep -q "$VAR"; then
             echo "check=0" >> $GITHUB_OUTPUT
           else
             echo "check=1" >> $GITHUB_OUTPUT
