@@ -24,11 +24,17 @@ jobs:
         run: |
           echo ${{ steps.tag.outputs.tag }}
           VAR=$(echo "${{ steps.tag.outputs.tag }}" | sed 's/v//')
+          echo $VAR
           RELEASES=$(curl -s "https://api.github.com/repos/Lu7fer/Jar4Halo/releases/tags/${{ steps.tag.outputs.tag }}")
           if echo "$RELEASES" | jq '.assets[].name' | grep -q "$VAR"; then
             echo "check=0" >> $GITHUB_OUTPUT
           else
             echo "check=1" >> $GITHUB_OUTPUT
+            if curl -s "https://api.github.com/repos/halo-dev/halo/releases/tags/${{ steps.tag.outputs.tag }}" | jq '.prerelease' | grep -q "true"; then
+              echo "prerelease=true" >> $GITHUB_OUTPUT
+            else
+              echo "prerelease=false" >> $GITHUB_OUTPUT
+            fi
           fi
       - name: print var
         run: |
@@ -78,7 +84,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: ${{ steps.check.outputs.check != 0 }}
         with:
-          name: ${{ steps.tag.outputs.tag }}
+          prerelease: ${{ steps.check.outputs.prerelease }}
+          name: ${{ steps.ver.outputs.version }}
           tag_name: ${{ steps.tag.outputs.tag }}
           token: ${{ secrets.TOKEN }}
           files: application/build/libs/application-${{ steps.ver.outputs.version }}.jar
