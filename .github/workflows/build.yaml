@@ -4,7 +4,8 @@ on:
     branches:
       - main
   schedule:
-    - cron: '30 17 * * *'
+    - cron: '30 15 * * *'
+    - cron: '30 5 * * *'
 jobs:
   halo:
     runs-on: ubuntu-latest
