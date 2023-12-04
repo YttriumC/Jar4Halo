@@ -53,7 +53,7 @@ jobs:
           echo "version=${{ steps.tag.outputs.tag }}" | sed 's/=v/=/' > gradle.properties
           cat gradle.properties >> $GITHUB_OUTPUT
           cat gradle.properties
-          curl -s "https://api.github.com/repos/halo-dev/halo/releases/tags/${{ steps.tag.outputs.tag }}" | jq '.body' > body.txt
+          curl -s "https://api.github.com/repos/halo-dev/halo/releases/tags/${{ steps.tag.outputs.tag }}" | jq '.body' | sed 's/\\r\\n/\r\n/g' > body.txt
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
