@@ -53,6 +53,7 @@ jobs:
           echo "version=${{ steps.tag.outputs.tag }}" | sed 's/=v/=/' > gradle.properties
           cat gradle.properties >> $GITHUB_OUTPUT
           cat gradle.properties
+          curl -s "https://api.github.com/repos/halo-dev/halo/releases/tags/${{ steps.tag.outputs.tag }}" | jq '.body' > body.txt
       - uses: actions/setup-java@v3
         if: ${{ steps.check.outputs.check != 0 }}
         with:
@@ -62,7 +63,7 @@ jobs:
         with:
           node-version: '18'
         if: ${{ steps.check.outputs.check != 0 }}
-      - name: copy resources
+      - name: gen resources
         if: ${{ steps.check.outputs.check != 0 }}
         run: |
           cd console
@@ -85,6 +86,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: ${{ steps.check.outputs.check != 0 }}
         with:
+          body_path: body.txt
           prerelease: ${{ steps.check.outputs.prerelease }}
           name: ${{ steps.ver.outputs.version }}
           tag_name: ${{ steps.tag.outputs.tag }}
