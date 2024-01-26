@@ -1,6 +1,6 @@
 # Jar4Halo
 
-或许是经常在群里发jar构建, 使John Niang重新添加jar支持; Halo从 [2.12.0-alpha.1](https://github.com/halo-dev/halo/releases/tag/v2.12.0-alpha.1) 开始重新提供jar构建, 此项目已无必要.
+或许是经常在群里发jar构建, 使John Niang重新考虑添加jar支持; Halo从 [2.12.0-alpha.1](https://github.com/halo-dev/halo/releases/tag/v2.12.0-alpha.1) 开始重新提供jar构建, 此项目已无必要.
 
 
 
